@@ -23,7 +23,7 @@ by Jane Plomp
 
 - Chords = Make each melody note into polyphonic group of notes for chord (melody note = bass). So: in key of C major, if melody at a certain point = la, then play la do and mi (which would become A4, E4, and C4 in this case. By doing in this manner, there will naturally be inversions)
 
--Year mod 12 == Instrument(different synths, etc), based on Chinese zodiac sign
+- Year mod 12 == Instrument(different synths, etc), based on Chinese zodiac sign
 
 #### What may be challenging, but I intend to exist in end product:
 
