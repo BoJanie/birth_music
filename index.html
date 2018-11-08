@@ -7,6 +7,7 @@
         <h3>This program is currently in development, so it has limited capabilities. </h3>
         <p><b>Currently the program will: </b><br>
             1. Receive inputs for your birthday <br>
+            2. Play a melody based on your birthday <br>
             For testing purposes: <br>
             2. Repeat that birthday back to you <br>
             3. Print the birthday as a string <br>
@@ -75,10 +76,57 @@
                 var doNoteH = "C5";
                 var reNoteH = "D5";
 
+                //This function will convert a single digit number to solfege:
+                var result;
+                function convertNumberToSolfege(num) {
+                  if(num=='0') {
+                    return tiNoteL
+                    console.log(num + "converted to tiNoteL")
+                  } else if(num=='1') {
+                    return doNote
+                    console.log(num + "converted to doNote")
+                  } else if(num=='2') {
+                    return reNote
+                    console.log(num + "converted to reNote")
+                  } else if(num=='3') {
+                    return miNote
+                    console.log(num + "converted to miNote")
+                  } else if(num=='4') {
+                    return faNote
+                    console.log(num + "converted to faNote")
+                  } else if(num=='5') {
+                    return soNote
+                    console.log(num + "converted to laNote")
+                  } else if(num=='6') {
+                    return laNote
+                    console.log(num + "converted to laNote")
+                  } else if(num=='7') {
+                    return tiNote
+                    console.log(num + "converted to tiNote")
+                  } else if(num=='8') {
+                    return doNoteH
+                    console.log(num + "converted to doNoteH")
+                  } else if(num=='9') {
+                    return reNoteH
+                    console.log(num + "converted to reNoteH")
+                  } else {
+                    return ""
+                    console.log("You need to use numbers!!")
+                  }
+                }
+
+                //Convert numbers to solfege using function above, store in array to play
+                var notes = [doNote];
+                for(i=0; i<birthdayString.length; i++) {
+                  notes.push(convertNumberToSolfege(birthdayString.charAt(i)));
+                  console.log(birthdayString.charAt(i) + " equals " + notes[i+1]);
+                }
+
+
                 //These are the notes that will be played!
                 //ISSUE!!! On my computer Firefox, if notes.length>6, will not play notes after that. notes.length>7=not play at all (CPU goes whack)
                 //var notes = [doNote, reNote, doNote, faNote, soNote, laNote, tiNote, doNote, doNote, doNote];
-                var notes = [tiNoteL, doNote, reNote, miNote, faNote, soNote, laNote, tiNote, doNoteH, reNoteH];
+                //var notes = [tiNoteL, doNote, reNote, miNote, faNote, soNote, laNote, tiNote, doNoteH, reNoteH];
 
                 const now = 0.50+Tone.now();
                 //Set a time duration (tempo)
@@ -87,7 +135,7 @@
                 //ACTUALLY PLAY NOTES!!! Will play whole notes array
                 var i;
                 for(i = 0; i < notes.length; i++) {
-                  synth.triggerAttackRelease(notes[i],"4n", now + 0.25 + dur*i);
+                  synth.triggerAttackRelease(notes[i],"4n", now + dur*i);
                 };
                 /*ACTUAL NOTES IN ORDER
                 synth.triggerAttackRelease(notes[0],"4n", now);
@@ -101,8 +149,6 @@
                 synth.triggerAttackRelease(notes[8],"4n", now + dur*8);
                 synth.triggerAttackRelease(notes[9],"4n", now + dur*9);
                 */
-
-
             };
             document.getElementById('submit').addEventListener('click',getBirthday);
 
