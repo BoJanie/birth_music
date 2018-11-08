@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+    <head><meta charset="utf-8"></head>
+    <body>
+        <h1>Birth Music Program</h1>
+        <p>by Jane Plomp</p>
+        <h3>This program is currently in development, so it has limited capabilities. </h3>
+        <p><b>Currently the program will: </b><br>
+            1. Receive inputs for your birthday <br>
+            2. Play a melody based on your birthday <br>
+            For testing purposes: <br>
+            2. Repeat that birthday back to you <br>
+            3. Print the birthday as a string <br>
+            4. Point out the third number of that string. <br>
+            5. Print the day, and do a calculation on the day. <br> <br>
+            Try it out if you want! <br>
+            Put in your birthday (using numbers) and click the submit button. </p>
+
+        Day born:<input id="day">
+        Month born:<input id="month">
+        Year born:<input id="year">
+        <button id="submit">Submit</button>
+
+        <hr> <!--Horizontal line-->
+        <div id="birthdayDisplay"></div> <br> <!--what is div?? -->
+        <div id="birthdayStringDisplay"></div>
+        <div id="charAtDisplay"></div>
+        <div id="dayDisplay"></div>
+
+        <script src="js/tone.js"></script>
+
+        <script>
+            //Collect Birthday from User and runs function on it
+            function getBirthday() {
+                var day = document.getElementById("day").value;
+                var month = document.getElementById("month").value;
+                var year = document.getElementById("year").value;
+
+                //Verbalizes birthday to make sure it's correct
+                var birthday = "You were born " + month + "/" + day + "/" + year + ".";
+                document.getElementById("birthdayDisplay").innerHTML = birthday;
+
+                //Turns the birthday into a string that can be used/converted for calculations
+                var birthdayString = month + day + year;
+                document.getElementById("birthdayStringDisplay").innerHTML = birthdayString;
+
+                //Testing the ability to isolate a single number
+                var characterAt3 = birthdayString.charAt(2);
+                document.getElementById("charAtDisplay").innerHTML = "The third number is: " + characterAt3;
+
+                //Testing ability to get larger than one-digit number for calculations
+                //var dayInt = parseInt((birthdayString.charAt(2)+birthdayString.charAt(3)));
+                var dayInt = parseInt(day);
+                var dayIntCalc = dayInt + 10;
+                document.getElementById("dayDisplay").innerHTML = "Day you were born is " + dayInt + ", add 10 and you get " +dayIntCalc;
+
+
+
+                //ACTUAL MUSIC PRODUCTION:
+                var synth = new Tone.Synth().toMaster();
+
+                //Function to quickly play note:
+                function triggerSynth(note,time) {
+                  synth.triggerAttackRelease(note,"4n",time);
+                };
+
+                //KEYS
+                if(month=="01") { //January = C Major
+                    var tiNoteL = "B3";
+                    var doNote = "C4";
+                    var reNote = "D4";
+                    var miNote = "E4";
+                    var faNote = "F4";
+                    var soNote = "G4";
+                    var laNote = "A4";
+                    var tiNote = "B4";
+                    var doNoteH = "C5";
+                    var reNoteH = "D5";
+                } else if(month=="02") { //February = Db Major
+                    var tiNoteL = "C4";
+                    var doNote = "Db4";
+                    var reNote = "Eb4";
+                    var miNote = "F4";
+                    var faNote = "Gb4";
+                    var soNote = "Ab4";
+                    var laNote = "Bb4";
+                    var tiNote = "C5";
+                    var doNoteH = "Db5";
+                    var reNoteH = "Eb5";
+                } else if(month=="03") { //March = D Major
+                    var tiNoteL = "C#4";
+                    var doNote = "D4";
+                    var reNote = "E4";
+                    var miNote = "F#4";
+                    var faNote = "G4";
+                    var soNote = "A4";
+                    var laNote = "B4";
+                    var tiNote = "C#5";
+                    var doNoteH = "D5";
+                    var reNoteH = "E5";
+                } else if(month=="04") { //April = Eb Major
+                    var tiNoteL = "D4";
+                    var doNote = "Eb4";
+                    var reNote = "F4";
+                    var miNote = "G4";
+                    var faNote = "Ab4";
+                    var soNote = "Bb4";
+                    var laNote = "C5";
+                    var tiNote = "D5";
+                    var doNoteH = "Eb5";
+                    var reNoteH = "F5";
+                } else if(month=="05") { //May = E Major
+                    var tiNoteL = "D#4";
+                    var doNote = "E4";
+                    var reNote = "F#4";
+                    var miNote = "G#4";
+                    var faNote = "A4";
+                    var soNote = "B4";
+                    var laNote = "C#5";
+                    var tiNote = "D#5";
+                    var doNoteH = "E5";
+                    var reNoteH = "F#5";
+                } else if(month=="06") { //June = F Major
+                    var tiNoteL = "E4";
+                    var doNote = "F4";
+                    var reNote = "G4";
+                    var miNote = "A4";
+                    var faNote = "Bb4";
+                    var soNote = "C5";
+                    var laNote = "D5";
+                    var tiNote = "E5";
+                    var doNoteH = "F5";
+                    var reNoteH = "G5";
+                } else if(month=="07") { //July = Gb Major
+                    var tiNoteL = "F4";
+                    var doNote = "Gb4";
+                    var reNote = "Ab4";
+                    var miNote = "Bb4";
+                    var faNote = "B4";
+                    var soNote = "Db5";
+                    var laNote = "Eb5";
+                    var tiNote = "F5";
+                    var doNoteH = "Gb5";
+                    var reNoteH = "Ab5";
+                } else if(month=="08") { //August = G Major
+                    var tiNoteL = "F#4";
+                    var doNote = "G4";
+                    var reNote = "A4";
+                    var miNote = "B4";
+                    var faNote = "C5";
+                    var soNote = "D5";
+                    var laNote = "E5";
+                    var tiNote = "F#5";
+                    var doNoteH = "G5";
+                    var reNoteH = "A5";
+                } else if(month=="09") { //September = Ab Major
+                    var tiNoteL = "G3";
+                    var doNote = "Ab3";
+                    var reNote = "Bb3";
+                    var miNote = "C4";
+                    var faNote = "Db4";
+                    var soNote = "Eb4";
+                    var laNote = "F4";
+                    var tiNote = "G4";
+                    var doNoteH = "Ab4";
+                    var reNoteH = "Bb4";
+                } else if(month=="10") { //October = A Major
+                    var tiNoteL = "G#3";
+                    var doNote = "A3";
+                    var reNote = "B3";
+                    var miNote = "C#4";
+                    var faNote = "D4";
+                    var soNote = "E4";
+                    var laNote = "F#4";
+                    var tiNote = "G#4";
+                    var doNoteH = "A4";
+                    var reNoteH = "B4";
+                } else if(month=="11") { //November= Bb Major
+                    var tiNoteL = "A3";
+                    var doNote = "Bb3";
+                    var reNote = "C4";
+                    var miNote = "D4";
+                    var faNote = "Eb4";
+                    var soNote = "F4";
+                    var laNote = "G4";
+                    var tiNote = "A4";
+                    var doNoteH = "Bb4";
+                    var reNoteH = "C5";
+                } else if(month=="12") { //December= B Major
+                    var tiNoteL = "A#3";
+                    var doNote = "B3";
+                    var reNote = "C#4";
+                    var miNote = "D#4";
+                    var faNote = "E4";
+                    var soNote = "F#4";
+                    var laNote = "G#4";
+                    var tiNote = "A#4";
+                    var doNoteH = "B4";
+                    var reNoteH = "C#5";
+                }
+
+                //This function will convert a single digit number to solfege:
+                var result;
+                function convertNumberToSolfege(num) {
+                  if(num=='0') {
+                    return tiNoteL
+                    console.log(num + "converted to tiNoteL")
+                  } else if(num=='1') {
+                    return doNote
+                    console.log(num + "converted to doNote")
+                  } else if(num=='2') {
+                    return reNote
+                    console.log(num + "converted to reNote")
+                  } else if(num=='3') {
+                    return miNote
+                    console.log(num + "converted to miNote")
+                  } else if(num=='4') {
+                    return faNote
+                    console.log(num + "converted to faNote")
+                  } else if(num=='5') {
+                    return soNote
+                    console.log(num + "converted to laNote")
+                  } else if(num=='6') {
+                    return laNote
+                    console.log(num + "converted to laNote")
+                  } else if(num=='7') {
+                    return tiNote
+                    console.log(num + "converted to tiNote")
+                  } else if(num=='8') {
+                    return doNoteH
+                    console.log(num + "converted to doNoteH")
+                  } else if(num=='9') {
+                    return reNoteH
+                    console.log(num + "converted to reNoteH")
+                  } else {
+                    return ""
+                    console.log("You need to use numbers!!")
+                  }
+                }
+
+                //Convert numbers to solfege using function above, store in array to play
+                //Array starts with a doNote
+                var notes = [];
+                for(i=0; i<birthdayString.length; i++) {
+                  notes.push(convertNumberToSolfege(birthdayString.charAt(i)));
+                  console.log(birthdayString.charAt(i) + " equals " + notes[i+1]);
+                }
+                //Array ends with a do, based on how high last note is
+                var lastNote = notes[notes.length-1]
+                if(lastNote==tiNote || lastNote==doNoteH || lastNote==reNoteH) {
+                  notes.push(doNoteH)
+                } else {
+                  notes.push(doNote)
+                }
+
+                //These are the notes that will be played!
+                //ISSUE!!! On my computer Firefox, if notes.length>6, will not play notes after that. notes.length>7=not play at all (CPU goes whack)
+                //var notes = [doNote, reNote, doNote, faNote, soNote, laNote, tiNote, doNote, doNote, doNote];
+                //var notes = [tiNoteL, doNote, reNote, miNote, faNote, soNote, laNote, tiNote, doNoteH, reNoteH];
+
+                const now = 0.50+Tone.now();
+                //Set a time duration (tempo) based on day born
+                var dur = 0.50 + dayInt*0.025;
+
+                //ACTUALLY PLAY NOTES!!! Will play whole notes array
+                var i;
+                for(i = 0; i < notes.length; i++) {
+                  synth.triggerAttackRelease(notes[i],"4n", now + dur*i);
+                };
+            };
+            document.getElementById('submit').addEventListener('click',getBirthday);
+
+
+        </script>
+    </body>
+</html>
