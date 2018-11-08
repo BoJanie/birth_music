@@ -24,7 +24,6 @@ by Jane Plomp
 - Chords = Make each melody note into polyphonic group of notes for chord (melody note = bass). So: in key of C major, if melody at a certain point = la, then play la do and mi (which would become A4, E4, and C4 in this case. By doing in this manner, there will naturally be inversions)
 
 - Year mod 12 == Instrument(different synths, etc), based on Chinese zodiac sign
-
 #### What may be challenging, but I intend to exist in end product:
 
 - Chord pattern: arpeggio up, arpeggio down, altogether, any other variation. Uncertain which number(s) to connect to. (Season for notes 2-3, 30/4 intervals for notes 4-5, year (notes 6-9)?)
