@@ -11,9 +11,9 @@ by Jane Plomp
 
 - ~~Accept user input for birthday~~ Drafted
 
-- Turn birthday into easily accessible array
+- ~~Turn birthday into easily accessible array~~ Did a string, can .charAt()
 
-- Set up tone so that notes equated with a variable (do=C4, re=D4, etc), starting with key of C Major. Will eventually update to accomodate different keys
+- ~~Set up tone so that notes equated with a variable (do=C4, re=D4, etc), starting with key of C Major. Will eventually update to accommodate different keys~~
 
 - Play one note for each note in birthday (1=do, 2=re, so on and so forth) to make a basic melody. Start and end with do, with birthday notes in between (for musical cohesion) (but listen to how it sounds rhythmically then decide). If last birthday note is ti or higher, go to high do for end. For example, my birthday (07/21/1997) would be: do-ti(low)-ti(high)-re-do-do-re(high)-re(high)-ti-do
 
