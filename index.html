@@ -116,10 +116,18 @@
                 }
 
                 //Convert numbers to solfege using function above, store in array to play
+                //Array starts with a doNote
                 var notes = [doNote];
                 for(i=0; i<birthdayString.length; i++) {
                   notes.push(convertNumberToSolfege(birthdayString.charAt(i)));
                   console.log(birthdayString.charAt(i) + " equals " + notes[i+1]);
+                }
+                //Array ends with a do, based on how high last note is
+                var lastNote = notes[notes.length-1]
+                if(lastNote==tiNote || lastNote==doNoteH || lastNote==reNoteH) {
+                  notes.push(doNoteH)
+                } else {
+                  notes.push(doNote)
                 }
 
 
