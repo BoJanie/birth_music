@@ -14,48 +14,99 @@
             5. Print the day, and do a calculation on the day. <br> <br>
             Try it out if you want! <br>
             Put in your birthday (using numbers) and click the submit button. </p>
-        
+
         Day born:<input id="day">
         Month born:<input id="month">
         Year born:<input id="year">
         <button id="submit">Submit</button>
-        
+
         <hr> <!--Horizontal line-->
         <div id="birthdayDisplay"></div> <br> <!--what is div?? -->
         <div id="birthdayStringDisplay"></div>
         <div id="charAtDisplay"></div>
         <div id="dayDisplay"></div>
-        
+
         <script src="js/tone.js"></script>
-        
+
         <script>
             //Collect Birthday from User and runs function on it
             function getBirthday() {
                 var day = document.getElementById("day").value;
                 var month = document.getElementById("month").value;
                 var year = document.getElementById("year").value;
-                
+
                 //Verbalizes birthday to make sure it's correct
                 var birthday = "You were born " + month + "/" + day + "/" + year + ".";
                 document.getElementById("birthdayDisplay").innerHTML = birthday;
-                
+
                 //Turns the birthday into a string that can be used/converted for calculations
                 var birthdayString = month + day + year;
                 document.getElementById("birthdayStringDisplay").innerHTML = birthdayString;
-                
+
                 //Testing the ability to isolate a single number
-                var characterAt3 = birthdayString.charAt(2)
+                var characterAt3 = birthdayString.charAt(2);
                 document.getElementById("charAtDisplay").innerHTML = "The third number is: " + characterAt3;
-                
+
                 //Testing ability to get larger than one-digit number for calculations
                 //var dayInt = parseInt((birthdayString.charAt(2)+birthdayString.charAt(3)));
                 var dayInt = parseInt(day);
                 var dayIntCalc = dayInt + 10;
                 document.getElementById("dayDisplay").innerHTML = "Day you were born is " + dayInt + ", add 10 and you get " +dayIntCalc;
+
+
+
+                //ACTUAL MUSIC PRODUCTION:
+                var synth = new Tone.Synth().toMaster();
+
+                //Function to quickly play note:
+                function triggerSynth(note,time) {
+                  synth.triggerAttackRelease(note,"4n",time);
+                };
+
+                //KEY of C Major
+                var tiNoteL = "B3";
+                var doNote = "C4";
+                var reNote = "D4";
+                var miNote = "E4";
+                var faNote = "F4";
+                var soNote = "G4";
+                var laNote = "A4";
+                var tiNote = "B4";
+                var doNoteH = "C5";
+                var reNoteH = "D5";
+
+                //These are the notes that will be played!
+                //ISSUE!!! On my computer Firefox, if notes.length>6, will not play notes after that. notes.length>7=not play at all (CPU goes whack)
+                //var notes = [doNote, reNote, doNote, faNote, soNote, laNote, tiNote, doNote, doNote, doNote];
+                var notes = [tiNoteL, doNote, reNote, miNote, faNote, soNote, laNote, tiNote, doNoteH, reNoteH];
+
+                const now = 0.50+Tone.now();
+                //Set a time duration (tempo)
+                var dur = 0.50;
+
+                //ACTUALLY PLAY NOTES!!! Will play whole notes array
+                var i;
+                for(i = 0; i < notes.length; i++) {
+                  synth.triggerAttackRelease(notes[i],"4n", now + 0.25 + dur*i);
+                };
+                /*ACTUAL NOTES IN ORDER
+                synth.triggerAttackRelease(notes[0],"4n", now);
+                synth.triggerAttackRelease(notes[1],"4n", now + dur);
+                synth.triggerAttackRelease(notes[2],"4n", now + dur*2);
+                synth.triggerAttackRelease(notes[3],"4n", now + dur*3);
+                synth.triggerAttackRelease(notes[4],"4n", now + dur*4);
+                synth.triggerAttackRelease(notes[5],"4n", now + dur*5);
+                synth.triggerAttackRelease(notes[6],"4n", now + dur*6);
+                synth.triggerAttackRelease(notes[7],"4n", now + dur*7);
+                synth.triggerAttackRelease(notes[8],"4n", now + dur*8);
+                synth.triggerAttackRelease(notes[9],"4n", now + dur*9);
+                */
+
+
             };
             document.getElementById('submit').addEventListener('click',getBirthday);
-            
-            
+
+
         </script>
     </body>
 </html>
