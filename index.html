@@ -237,6 +237,29 @@
                     console.log("You need to use numbers!!")
                   }
                 }
+                //This function will only convert multiples of 7, good for harmony
+                function convertNumberToSolfege7(num) {
+                  if(num=='0') {
+                    return doNote
+                  } else if(num=='1') {
+                    return reNote
+                  } else if(num=='2') {
+                    return miNote
+                  } else if(num=='3') {
+                    return faNote
+                  } else if(num=='4') {
+                    return soNote
+                  } else if(num=='5') {
+                    return laNote
+                  } else if(num=='6') {
+                    return tiNote
+                  } else if(num=='7') {
+                    return doNoteH
+                  } else {
+                    return ""
+                    console.log("Something went wrong with convertNumberToSolfege7")
+                  }
+                }
 
                 //Convert numbers to solfege using function above, store in array to play
                 //Array starts with a doNote
@@ -253,6 +276,43 @@
                   notes.push(doNote)
                 }
 
+                //CHORDS!! Make a polysynth First
+                //var polySynth = newTone.PolySynth(4,Tone.synth).toMaster()
+                //Find the THIRD
+                var thirds = [];
+                for(i=0;i<birthdayString.length; i++) {
+                  //Third below high do:
+                  console.log(birthdayString.charAt(i));
+                  if(parseInt(birthdayString.charAt(i)) > 7) {
+                    var thirdTemp = parseInt(birthdayString.charAt(i))-5;
+                    console.log(">=8 third = " + thirdTemp);
+                    thirds.push(convertNumberToSolfege(thirdTemp));
+                  } else { //Third above high do needs to go down:
+                    var thirdTemp = (parseInt(birthdayString.charAt(i))+2)%10;
+                    console.log("<8 third = " + thirdTemp);
+                    thirds.push(convertNumberToSolfege(thirdTemp));
+                  }
+                }
+                //Add last note
+                thirds.push(miNote);
+
+                //Find the FIFTH
+                var fifths = [];
+                for(i=0;i<birthdayString.length; i++) {
+                  //Fifth below so:
+                  if(parseInt(birthdayString.charAt(i)) > 5) {
+                    var fifthTemp = parseInt(birthdayString.charAt(i))-2;
+                    fifths.push(convertNumberToSolfege(fifthTemp));
+                  } else { //fifth above so needs to go down:
+                    var fifthTemp = (parseInt(birthdayString.charAt(i))+4)%10;
+                    fifths.push(convertNumberToSolfege(fifthTemp));
+                  }
+                }
+                //Add last note:
+                fifths.push(soNote);
+
+
+
                 //These are the notes that will be played!
                 //ISSUE!!! On my computer Firefox, if notes.length>6, will not play notes after that. notes.length>7=not play at all (CPU goes whack)
                 //var notes = [doNote, reNote, doNote, faNote, soNote, laNote, tiNote, doNote, doNote, doNote];
@@ -260,13 +320,25 @@
 
                 const now = 0.50+Tone.now();
                 //Set a time duration (tempo) based on day born
-                var dur = 0.50 + dayInt*0.025;
+                var dur = 1 + dayInt*0.025;
 
                 //ACTUALLY PLAY NOTES!!! Will play whole notes array
+                /*
                 var i;
                 for(i = 0; i < notes.length; i++) {
                   synth.triggerAttackRelease(notes[i],"4n", now + dur*i);
                 };
+                */
+
+                //PLAY CHORDS!!
+                //make polysynth first...
+                var polySynth = new Tone.PolySynth(3, Tone.Synth).toMaster();
+                //now play those sweet, sweet chords...
+                var i;
+                for(i=0; i < notes.length; i++) {
+                  polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur + 0.40, now + dur*i);
+                  //polySynth.triggerRelease([notes[i], thirds[i]]);
+                }
             };
             document.getElementById('submit').addEventListener('click',getBirthday);
 
