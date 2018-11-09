@@ -1,31 +1,29 @@
 <!DOCTYPE html>
 <html>
-    <head><meta charset="utf-8"></head>
+<head>
+  <meta charset="utf-8">
+    <title> Birth Music Program </title>
+  </head>
     <body>
         <h1>Birth Music Program</h1>
         <p>by Jane Plomp</p>
         <h3>This program is currently in development, so it has limited capabilities. </h3>
         <p><b>Currently the program will: </b><br>
             1. Receive inputs for your birthday <br>
-            2. Play a melody based on your birthday <br>
-            For testing purposes: <br>
-            2. Repeat that birthday back to you <br>
-            3. Print the birthday as a string <br>
-            4. Point out the third number of that string. <br>
-            5. Print the day, and do a calculation on the day. <br> <br>
+            2. Prints your birthday <br>
+            3. Play a series of chords based on your birthday <br> <br>
             Try it out if you want! <br>
-            Put in your birthday (using numbers) and click the submit button. </p>
+            Put in your birthday and click the submit button. <br>
+            Note: Use zeroes (so if you were born on January fifth type in 01 and 05 instead of 1 and 5)</p>
 
-        Day born:<input id="day">
+
         Month born:<input id="month">
+        Day born:<input id="day">
         Year born:<input id="year">
         <button id="submit">Submit</button>
 
         <hr> <!--Horizontal line-->
         <div id="birthdayDisplay"></div> <br> <!--what is div?? -->
-        <div id="birthdayStringDisplay"></div>
-        <div id="charAtDisplay"></div>
-        <div id="dayDisplay"></div>
 
         <script src="js/tone.js"></script>
 
@@ -42,19 +40,12 @@
 
                 //Turns the birthday into a string that can be used/converted for calculations
                 var birthdayString = month + day + year;
-                document.getElementById("birthdayStringDisplay").innerHTML = birthdayString;
+                function bdayInt(num){
+                  return parseInt(birthdayString.charAt(num));
+                }
 
-                //Testing the ability to isolate a single number
-                var characterAt3 = birthdayString.charAt(2);
-                document.getElementById("charAtDisplay").innerHTML = "The third number is: " + characterAt3;
-
-                //Testing ability to get larger than one-digit number for calculations
                 //var dayInt = parseInt((birthdayString.charAt(2)+birthdayString.charAt(3)));
                 var dayInt = parseInt(day);
-                var dayIntCalc = dayInt + 10;
-                document.getElementById("dayDisplay").innerHTML = "Day you were born is " + dayInt + ", add 10 and you get " +dayIntCalc;
-
-
 
                 //ACTUAL MUSIC PRODUCTION:
                 var synth = new Tone.Synth().toMaster();
@@ -203,38 +194,61 @@
                 var result;
                 function convertNumberToSolfege(num) {
                   if(num=='0') {
-                    return tiNoteL
+                    return tiNoteL;
                     console.log(num + "converted to tiNoteL")
                   } else if(num=='1') {
-                    return doNote
+                    return doNote;
                     console.log(num + "converted to doNote")
                   } else if(num=='2') {
-                    return reNote
+                    return reNote;
                     console.log(num + "converted to reNote")
                   } else if(num=='3') {
-                    return miNote
+                    return miNote;
                     console.log(num + "converted to miNote")
                   } else if(num=='4') {
-                    return faNote
+                    return faNote;
                     console.log(num + "converted to faNote")
                   } else if(num=='5') {
-                    return soNote
+                    return soNote;
                     console.log(num + "converted to laNote")
                   } else if(num=='6') {
-                    return laNote
+                    return laNote;
                     console.log(num + "converted to laNote")
                   } else if(num=='7') {
-                    return tiNote
+                    return tiNote;
                     console.log(num + "converted to tiNote")
                   } else if(num=='8') {
-                    return doNoteH
+                    return doNoteH;
                     console.log(num + "converted to doNoteH")
                   } else if(num=='9') {
-                    return reNoteH
+                    return reNoteH;
                     console.log(num + "converted to reNoteH")
                   } else {
-                    return ""
+                    return "";
                     console.log("You need to use numbers!!")
+                  }
+                }
+                //This function will only convert multiples of 7, good for harmony?
+                function convertNumberToSolfege7(num) {
+                  if(num=='0') {
+                    return doNote
+                  } else if(num=='1') {
+                    return reNote;
+                  } else if(num=='2') {
+                    return miNote;
+                  } else if(num=='3') {
+                    return faNote;
+                  } else if(num=='4') {
+                    return soNote;
+                  } else if(num=='5') {
+                    return laNote;
+                  } else if(num=='6') {
+                    return tiNote;
+                  } else if(num=='7') {
+                    return doNoteH;
+                  } else {
+                    return "";
+                    console.log("Something went wrong with convertNumberToSolfege7")
                   }
                 }
 
@@ -253,6 +267,45 @@
                   notes.push(doNote)
                 }
 
+                //CHORDS!! Make a polysynth First
+                //var polySynth = newTone.PolySynth(4,Tone.synth).toMaster()
+                //Find the THIRD
+                var thirds = [];
+                for(i=0;i<birthdayString.length; i++) {
+                  //Third below high do:
+                  console.log(birthdayString.charAt(i));
+                  if(bdayInt(i) > 7) {
+                    var thirdTemp = bdayInt(i)-5;
+                    console.log(">=8: third = " + thirdTemp);
+                    thirds.push(convertNumberToSolfege(thirdTemp));
+                  } else { //Third above high do needs to go down:
+                    var thirdTemp = (bdayInt(i)+2)%10;
+                    console.log("< 8: third = " + thirdTemp);
+                    thirds.push(convertNumberToSolfege(thirdTemp));
+                  }
+                }
+                //Add last note
+              thirds.push(miNote);
+
+                //Find the FIFTH
+                var fifths = [];
+                for(i=0;i<birthdayString.length; i++) {
+                  //Fifth below so:
+                  if(bdayInt(i) > 5) {
+                    var fifthTemp = bdayInt(i)-3;
+                    fifths.push(convertNumberToSolfege(fifthTemp));
+                    console.log("> 5: fifth = " + fifthTemp);
+                  } else { //fifth above so needs to go down:
+                    var fifthTemp = (bdayInt(i)+4)%10;
+                    fifths.push(convertNumberToSolfege(fifthTemp));
+                    console.log("<=5: fifth = " + fifthTemp);
+                  }
+                }
+                //Add last note:
+                fifths.push(soNote);
+
+
+
                 //These are the notes that will be played!
                 //ISSUE!!! On my computer Firefox, if notes.length>6, will not play notes after that. notes.length>7=not play at all (CPU goes whack)
                 //var notes = [doNote, reNote, doNote, faNote, soNote, laNote, tiNote, doNote, doNote, doNote];
@@ -260,13 +313,25 @@
 
                 const now = 0.50+Tone.now();
                 //Set a time duration (tempo) based on day born
-                var dur = 0.50 + dayInt*0.025;
+                var dur = 1 + dayInt*0.025;
 
                 //ACTUALLY PLAY NOTES!!! Will play whole notes array
+                /*
                 var i;
                 for(i = 0; i < notes.length; i++) {
                   synth.triggerAttackRelease(notes[i],"4n", now + dur*i);
                 };
+                */
+
+                //PLAY CHORDS!!
+                //make polysynth first...
+                var polySynth = new Tone.PolySynth(3, Tone.Synth).toMaster();
+                //now play those sweet, sweet chords...
+                var i;
+                for(i=0; i < notes.length; i++) {
+                  polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur + 0.40, now + dur*i);
+                  //polySynth.triggerRelease([notes[i], thirds[i]]);
+                }
             };
             document.getElementById('submit').addEventListener('click',getBirthday);
 
