@@ -285,11 +285,11 @@
                   console.log(birthdayString.charAt(i));
                   if(parseInt(birthdayString.charAt(i)) > 7) {
                     var thirdTemp = parseInt(birthdayString.charAt(i))-5;
-                    console.log(">=8 third = " + thirdTemp);
+                    console.log(">=8: third = " + thirdTemp);
                     thirds.push(convertNumberToSolfege(thirdTemp));
                   } else { //Third above high do needs to go down:
                     var thirdTemp = (parseInt(birthdayString.charAt(i))+2)%10;
-                    console.log("<8 third = " + thirdTemp);
+                    console.log("< 8: third = " + thirdTemp);
                     thirds.push(convertNumberToSolfege(thirdTemp));
                   }
                 }
@@ -301,11 +301,13 @@
                 for(i=0;i<birthdayString.length; i++) {
                   //Fifth below so:
                   if(parseInt(birthdayString.charAt(i)) > 5) {
-                    var fifthTemp = parseInt(birthdayString.charAt(i))-2;
+                    var fifthTemp = parseInt(birthdayString.charAt(i))-3;
                     fifths.push(convertNumberToSolfege(fifthTemp));
+                    console.log("> 5: fifth = " + fifthTemp);
                   } else { //fifth above so needs to go down:
                     var fifthTemp = (parseInt(birthdayString.charAt(i))+4)%10;
                     fifths.push(convertNumberToSolfege(fifthTemp));
+                    console.log("<=5: fifth = " + fifthTemp);
                   }
                 }
                 //Add last note:
