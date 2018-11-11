@@ -316,22 +316,45 @@
                 var dur = 1 + dayInt*0.025;
 
                 //ACTUALLY PLAY NOTES!!! Will play whole notes array
-                /*
-                var i;
-                for(i = 0; i < notes.length; i++) {
-                  synth.triggerAttackRelease(notes[i],"4n", now + dur*i);
-                };
-                */
+                /*var personalSynth = new Tone.MonoSynth({
+                    "oscillator" : {
+                      "type" : "square8"
+                    },
+                    "envelope" : {
+                      "attack" : 0.05,
+                      "decay" : 0.8,
+                      "sustain" : 0.8,
+                      "release" : 0.8,
+                    },
+                    "filterEnvelope" : {
+                      "attack" : 0.001,
+                      "decay" : 0.3,
+                      "sustain" : 0.1,
+                      "release" : 0.8,
+                      "baseFrequency" : 300,
+                      "octaves" : 4
+                    }
+                  }).toMaster();
 
+                  var i;
+                  for(i = 0; i < notes.length; i++) {
+                    personalSynth.triggerAttackRelease(notes[i],"4n", now + dur*i);
+                  };
+                  */
                 //PLAY CHORDS!!
                 //make polysynth first...
                 var polySynth = new Tone.PolySynth(3, Tone.Synth).toMaster();
                 //now play those sweet, sweet chords...
                 var i;
                 for(i=0; i < notes.length; i++) {
-                  polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur + 0.40, now + dur*i);
-                  //polySynth.triggerRelease([notes[i], thirds[i]]);
-                }
+                  if(notes[i]==notes[i+1]) {
+                    synth.triggerAttackRelease(notes[i], dur/4, now+dur*i);
+                    synth.triggerAttackRelease(thirds[i], dur/4, now+dur*i+dur/4);
+                    synth.triggerAttackRelease(fifths[i], dur/2, now+dur*i+2*dur/4);
+                  } else {
+                    polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur, now + dur*i);
+                  }
+                };
             };
             document.getElementById('submit').addEventListener('click',getBirthday);
 
