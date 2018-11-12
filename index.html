@@ -44,7 +44,6 @@
                   return parseInt(birthdayString.charAt(num));
                 }
 
-                //var dayInt = parseInt((birthdayString.charAt(2)+birthdayString.charAt(3)));
                 var dayInt = parseInt(day);
 
                 //ACTUAL MUSIC PRODUCTION:
@@ -191,7 +190,6 @@
                 }
 
                 //This function will convert a single digit number to solfege:
-                var result;
                 function convertNumberToSolfege(num) {
                   if(num=='0') {
                     return tiNoteL;
@@ -276,11 +274,9 @@
                   console.log(birthdayString.charAt(i));
                   if(bdayInt(i) > 7) {
                     var thirdTemp = bdayInt(i)-5;
-                    console.log(">=8: third = " + thirdTemp);
                     thirds.push(convertNumberToSolfege(thirdTemp));
                   } else { //Third above high do needs to go down:
                     var thirdTemp = (bdayInt(i)+2)%10;
-                    console.log("< 8: third = " + thirdTemp);
                     thirds.push(convertNumberToSolfege(thirdTemp));
                   }
                 }
@@ -294,11 +290,9 @@
                   if(bdayInt(i) > 5) {
                     var fifthTemp = bdayInt(i)-3;
                     fifths.push(convertNumberToSolfege(fifthTemp));
-                    console.log("> 5: fifth = " + fifthTemp);
                   } else { //fifth above so needs to go down:
                     var fifthTemp = (bdayInt(i)+4)%10;
                     fifths.push(convertNumberToSolfege(fifthTemp));
-                    console.log("<=5: fifth = " + fifthTemp);
                   }
                 }
                 //Add last note:
@@ -345,12 +339,37 @@
                 //make polysynth first...
                 var polySynth = new Tone.PolySynth(3, Tone.Synth).toMaster();
                 //now play those sweet, sweet chords...
+                //The emphasis array will help us decide what note=chord vs arpeggios
+                emphasis = []
+                for(i=0; i < 4; i++) {
+                  //For the first half of the song:
+                  if(year%2 == 0) { //Year is even, chord on 1
+                    emphasis.push([now + dur*i, now + dur*i + dur/4, now + dur*i + 2*dur/4, now + dur*i + 3*dur/4])
+                  } else { //Year is odd, chord on 3
+                    emphasis.push([now + dur*i + 2*dur/4, now + dur*i, now + dur*i + dur/4, now + dur*i + 3*dur/4])
+                  }
+                }
+                for(i=4; i < notes.length; i++) {
+                  //For the second half of the song:
+                  if(month > 2 && month < 6) { //Spring! Chord on 1
+                    emphasis.push([now + dur*i, now + dur*i + dur/4, now + dur*i + 2*dur/4, now + dur*i + 3*dur/4])
+                  } else if(month > 5 && month < 9) { //Summer! Chord on 2
+                    emphasis.push([now + dur*i + dur/4, now + dur*i, now + dur*i + 2*dur/4, now + dur*i + 3*dur/4])
+                  } else if(month > 8 && month < 12) { //Fall! Chord on 3
+                    emphasis.push([now + dur*i + 2*dur/4, now + dur*i, now + dur*i + dur/4, now + dur*i + 3*dur/4])
+                  } else if(month == 12 || month < 3) { //Winter! Chord on 4
+                    emphasis.push([now + dur*i +3*dur/4, now + dur*i, now + dur*i + dur/4, now + dur*i + 2*dur/4])
+                  }
+                }
+
                 var i;
                 for(i=0; i < notes.length; i++) {
-                  if(notes[i]==notes[i+1]) {
-                    synth.triggerAttackRelease(notes[i], dur/4, now+dur*i);
-                    synth.triggerAttackRelease(thirds[i], dur/4, now+dur*i+dur/4);
-                    synth.triggerAttackRelease(fifths[i], dur/2, now+dur*i+2*dur/4);
+                  //if(notes[i]==notes[i+1]) {
+                  if((i>3 && i<6) || (i<2)) {
+                    polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur/4, emphasis[i][0]);
+                    synth.triggerAttackRelease(notes[i], dur/4, emphasis[i][1]);
+                    synth.triggerAttackRelease(thirds[i], dur/4, emphasis[i][2]);
+                    synth.triggerAttackRelease(fifths[i], dur/4, emphasis[i][3]);
                   } else {
                     polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur, now + dur*i);
                   }
