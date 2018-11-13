@@ -8,11 +8,7 @@
         <h1>Birth Music Program</h1>
         <p>by Jane Plomp</p>
         <h3>This program is currently in development </h3>
-        <p><b>Currently the program will: </b><br>
-            1. Receive inputs for your birthday <br>
-            2. Prints your birthday <br>
-            3. Play a series of chords based on your birthday <br> <br>
-            Try it out if you want! <br>
+        <p> <b>Try it out!</b> <br>
             Put in your birthday and click the submit button. <br>
             Note: Use zeroes (so if you were born on January fifth type in 01 and 05 instead of 1 and 5)</p>
 
@@ -370,6 +366,28 @@
                     polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur/2, now + dur*i)
                     polySynth.triggerAttackRelease([passingNote, thirds[i], fifths[i]], dur/2, now + dur*i + dur/2)
                     console.log("Passing note down at note number: " + (i+1))
+                  } else if(notesNumbers[i] == (notesNumbers[i+1] - 5)) { //If a fifth above, four passing notes
+                    var passOne = convertNumberToSolfege(notesNumbers[i] + 1);
+                    var passTwo = convertNumberToSolfege(notesNumbers[i] + 2);
+                    var passThree = convertNumberToSolfege(notesNumbers[i] + 3);
+                    var passFour = convertNumberToSolfege(notesNumbers[i] + 4);
+                    polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur/2, now + dur*i)
+                    synth.triggerAttackRelease(passOne, dur/8, now + dur*i + dur/2);
+                    synth.triggerAttackRelease(passTwo, dur/8, now + dur*i + 5*dur/8);
+                    synth.triggerAttackRelease(passThree, dur/8, now + dur*i + 6*dur/8);
+                    synth.triggerAttackRelease(passFour, dur/8, now + dur*i + 7*dur/8);
+                    console.log("Four passing notes up at note number " + (i+1));
+                  } else if(notesNumbers[i] == (notesNumbers[i+1] + 5)) { //If a fifth above, four passing notes
+                    var passOne = convertNumberToSolfege(notesNumbers[i] - 1);
+                    var passTwo = convertNumberToSolfege(notesNumbers[i] - 2);
+                    var passThree = convertNumberToSolfege(notesNumbers[i] - 3);
+                    var passFour = convertNumberToSolfege(notesNumbers[i] - 4);
+                    polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur/2, now + dur*i)
+                    synth.triggerAttackRelease(passOne, dur/8, now + dur*i + dur/2);
+                    synth.triggerAttackRelease(passTwo, dur/8, now + dur*i + 5*dur/8);
+                    synth.triggerAttackRelease(passThree, dur/8, now + dur*i + 6*dur/8);
+                    synth.triggerAttackRelease(passFour, dur/8, now + dur*i + 7*dur/8);
+                    console.log("Four passing notes down at note number " + (i+1));
                   } else { //otherwise just play the chord
                     polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur, now + dur*i);
                   }
