@@ -227,7 +227,7 @@
                   notesNumbers.push(bdayInt(i));
                 }
                 //Second section will be raised by:
-                var change = 5
+                var change = year%6 + 1
                 //Second section, same but up a third:
                 for(i=0; i<birthdayString.length; i++) {
                   notes.push(convertNumberToSolfege((bdayInt(i)+change)%10));
