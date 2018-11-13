@@ -28,12 +28,14 @@ by Jane Plomp
 - Year mod 12 == Instrument(different synths/settings, etc), based on Chinese zodiac sign
 #### What may be challenging, but I intend to exist in end product:
 
-- Chord pattern: arpeggio up, arpeggio down, altogether, any other variation. Uncertain which number(s) to connect to. (Season for notes 2-3, 30/4 intervals for notes 4-5, year (notes 6-9)?)
+- ~~Chord pattern: arpeggio up, arpeggio down, altogether, any other variation. Uncertain which number(s) to connect to. (Season for notes 2-3, 30/4 intervals for notes 4-5, year (notes 6-9)?)~~
 
 #### Would be fun to add if time is available:
 
-- Make song long through other variations (play forward-backwards-forwarb for ABA song? First A ends on so instead of do?)
+- ~~Make song long through other variations (play forward-backwards-forwarb for ABA song? First A ends on so instead of do?)~~
 
 - Can choose American date version (MMDDYYYY) or normal date version (DDMMYYYY) which alters first four notes of melody.
 
 - Bass notes? More layering? Specific inversion control? triplets??? We'll see!
+
+- ~~Passing notes, for thirds and sixths jumps~~
