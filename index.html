@@ -253,7 +253,6 @@
                 //var polySynth = newTone.PolySynth(4,Tone.synth).toMaster()
                 //Find the THIRD
                 var thirds = [];
-                //First section:
                 for(i=0;i<notesNumbers.length; i++) {
                   //Third below high do:
                   if(notesNumbers[i] > 7) {
@@ -264,8 +263,6 @@
                     thirds.push(convertNumberToSolfege(thirdTemp));
                   }
                 }
-              //Add last note
-              //thirds.push(miNote);
 
                 //Find the FIFTH
                 var fifths = [];
@@ -279,50 +276,17 @@
                     fifths.push(convertNumberToSolfege(fifthTemp));
                   }
                 }
-                //Add last note:
-                //fifths.push(soNote);
 
-
-
-                //These are the notes that will be played!
                 //ISSUE!!! On my computer Firefox, if notes.length>6, will not play notes after that. notes.length>7=not play at all (CPU goes whack)
-                //var notes = [doNote, reNote, doNote, faNote, soNote, laNote, tiNote, doNote, doNote, doNote];
-                //var notes = [tiNoteL, doNote, reNote, miNote, faNote, soNote, laNote, tiNote, doNoteH, reNoteH];
 
                 const now = 0.50+Tone.now();
                 //Set a time duration (tempo) based on day born
                 var dur = 1 + dayInt*0.025;
 
-                //ACTUALLY PLAY NOTES!!! Will play whole notes array
-                /*var personalSynth = new Tone.MonoSynth({
-                    "oscillator" : {
-                      "type" : "square8"
-                    },
-                    "envelope" : {
-                      "attack" : 0.05,
-                      "decay" : 0.8,
-                      "sustain" : 0.8,
-                      "release" : 0.8,
-                    },
-                    "filterEnvelope" : {
-                      "attack" : 0.001,
-                      "decay" : 0.3,
-                      "sustain" : 0.1,
-                      "release" : 0.8,
-                      "baseFrequency" : 300,
-                      "octaves" : 4
-                    }
-                  }).toMaster();
-
-                  var i;
-                  for(i = 0; i < notes.length; i++) {
-                    personalSynth.triggerAttackRelease(notes[i],"4n", now + dur*i);
-                  };
-                  */
                 //PLAY CHORDS!!
                 //make polysynth first...
                 var polySynth = new Tone.PolySynth(3, Tone.Synth).toMaster();
-                //now play those sweet, sweet chords...
+
                 //The emphasis array will help us decide what note=chord vs arpeggios
                 emphasis = [];
                 for(i=0; i < 4; i++) {
@@ -354,10 +318,44 @@
                   }
                 }
 
+                //This array will determine whether an arpeggio is played or not
+                //1= yes arpeggio, 2= no arpeggio
+                var arpeggios = [];
+                if(day%2 == 0) { //if born on an even numbered day, then this!
+                  for(i=0; i < notes.length; i++) {
+                    if(i%4 < 2){
+                      arpeggios.push(1)
+                    } else {
+                      arpeggios.push(0)
+                    }
+                  }
+                } else if( //if born on a prime number day, then this!
+                  day == 1 || day == 2 || day == 3 || day == 5 ||
+                  day == 7 || day == 11 || day == 13 || day == 17 ||
+                  day == 19|| day == 23 || day == 29 || day == 31
+                ) {
+                  for(i=0; i < notes.length; i++) {
+                    if((i%4 == 0 || i%4 == 2) && i%8 != 6){
+                      arpeggios.push(1)
+                    } else {
+                      arpeggios.push(0)
+                    }
+                  }
+                } else { //if non=prime odd, then:
+                  for(i=0; i < notes.length; i++) {
+                    if(i%8 < 4){
+                      arpeggios.push(1)
+                    } else {
+                      arpeggios.push(0)
+                    }
+                  }
+                }
+
+
                 //Now to actually play the notes!
                 var i;
                 for(i=0; i < notes.length; i++) {
-                  if((i%4 < 2) && (i != notes.length-1)) {
+                  if((arpeggios[i] == 1) && (i != notes.length-1)) { //REPLACE WITH A TRUE/FALSE ARRAY TO CHOOSE WHAT IS ARPEGGIATED!!!!
                     polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur/4, emphasis[i][0]);
                     synth.triggerAttackRelease(notes[i], dur/4, emphasis[i][1]);
                     synth.triggerAttackRelease(thirds[i], dur/4, emphasis[i][2]);
