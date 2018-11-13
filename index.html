@@ -7,7 +7,7 @@
     <body>
         <h1>Birth Music Program</h1>
         <p>by Jane Plomp</p>
-        <h3>This program is currently in development, so it has limited capabilities. </h3>
+        <h3>This program is currently in development </h3>
         <p><b>Currently the program will: </b><br>
             1. Receive inputs for your birthday <br>
             2. Prints your birthday <br>
@@ -193,110 +193,94 @@
                 function convertNumberToSolfege(num) {
                   if(num=='0') {
                     return tiNoteL;
-                    console.log(num + "converted to tiNoteL")
                   } else if(num=='1') {
                     return doNote;
-                    console.log(num + "converted to doNote")
                   } else if(num=='2') {
                     return reNote;
-                    console.log(num + "converted to reNote")
                   } else if(num=='3') {
                     return miNote;
-                    console.log(num + "converted to miNote")
                   } else if(num=='4') {
                     return faNote;
-                    console.log(num + "converted to faNote")
                   } else if(num=='5') {
                     return soNote;
-                    console.log(num + "converted to laNote")
                   } else if(num=='6') {
                     return laNote;
-                    console.log(num + "converted to laNote")
                   } else if(num=='7') {
                     return tiNote;
-                    console.log(num + "converted to tiNote")
                   } else if(num=='8') {
                     return doNoteH;
-                    console.log(num + "converted to doNoteH")
                   } else if(num=='9') {
                     return reNoteH;
-                    console.log(num + "converted to reNoteH")
                   } else {
                     return "";
                     console.log("You need to use numbers!!")
                   }
                 }
-                //This function will only convert multiples of 7, good for harmony?
-                function convertNumberToSolfege7(num) {
-                  if(num=='0') {
-                    return doNote
-                  } else if(num=='1') {
-                    return reNote;
-                  } else if(num=='2') {
-                    return miNote;
-                  } else if(num=='3') {
-                    return faNote;
-                  } else if(num=='4') {
-                    return soNote;
-                  } else if(num=='5') {
-                    return laNote;
-                  } else if(num=='6') {
-                    return tiNote;
-                  } else if(num=='7') {
-                    return doNoteH;
-                  } else {
-                    return "";
-                    console.log("Something went wrong with convertNumberToSolfege7")
-                  }
-                }
 
                 //Convert numbers to solfege using function above, store in array to play
-                //Array starts with a doNote
+                var i
                 var notes = [];
+                var notesNumbers = [];
+                //First section:
                 for(i=0; i<birthdayString.length; i++) {
-                  notes.push(convertNumberToSolfege(birthdayString.charAt(i)));
-                  console.log(birthdayString.charAt(i) + " equals " + notes[i+1]);
+                  notes.push(convertNumberToSolfege(bdayInt(i)));
+                  notesNumbers.push(bdayInt(i));
+                }
+                //Second section will be raised by:
+                var change = 5
+                //Second section, same but up a third:
+                for(i=0; i<birthdayString.length; i++) {
+                  notes.push(convertNumberToSolfege((bdayInt(i)+change)%10));
+                  notesNumbers.push((bdayInt(i)+change)%10);
+                }
+                //Repeat of first:
+                for(i=0; i<birthdayString.length; i++) {
+                  notes.push(convertNumberToSolfege(bdayInt(i)));
+                  notesNumbers.push(bdayInt(i));
                 }
                 //Array ends with a do, based on how high last note is
                 var lastNote = notes[notes.length-1]
                 if(lastNote==tiNote || lastNote==doNoteH || lastNote==reNoteH) {
                   notes.push(doNoteH)
+                  notesNumbers.push(8);
                 } else {
                   notes.push(doNote)
+                  notesNumbers.push(1);
                 }
+                console.log(notesNumbers);
 
                 //CHORDS!! Make a polysynth First
                 //var polySynth = newTone.PolySynth(4,Tone.synth).toMaster()
                 //Find the THIRD
                 var thirds = [];
-                for(i=0;i<birthdayString.length; i++) {
+                //First section:
+                for(i=0;i<notesNumbers.length; i++) {
                   //Third below high do:
-                  console.log(birthdayString.charAt(i));
-                  if(bdayInt(i) > 7) {
-                    var thirdTemp = bdayInt(i)-5;
+                  if(notesNumbers[i] > 7) {
+                    var thirdTemp = notesNumbers[i]-5;
                     thirds.push(convertNumberToSolfege(thirdTemp));
                   } else { //Third above high do needs to go down:
-                    var thirdTemp = (bdayInt(i)+2)%10;
+                    var thirdTemp = (notesNumbers[i]+2)%10;
                     thirds.push(convertNumberToSolfege(thirdTemp));
                   }
                 }
-                //Add last note
-              thirds.push(miNote);
+              //Add last note
+              //thirds.push(miNote);
 
                 //Find the FIFTH
                 var fifths = [];
-                for(i=0;i<birthdayString.length; i++) {
+                for(i=0;i<notesNumbers.length; i++) {
                   //Fifth below so:
-                  if(bdayInt(i) > 5) {
-                    var fifthTemp = bdayInt(i)-3;
+                  if(notesNumbers[i] > 5) {
+                    var fifthTemp = notesNumbers[i]-3;
                     fifths.push(convertNumberToSolfege(fifthTemp));
                   } else { //fifth above so needs to go down:
-                    var fifthTemp = (bdayInt(i)+4)%10;
+                    var fifthTemp = (notesNumbers[i]+4)%10;
                     fifths.push(convertNumberToSolfege(fifthTemp));
                   }
                 }
                 //Add last note:
-                fifths.push(soNote);
+                //fifths.push(soNote);
 
 
 
@@ -340,37 +324,45 @@
                 var polySynth = new Tone.PolySynth(3, Tone.Synth).toMaster();
                 //now play those sweet, sweet chords...
                 //The emphasis array will help us decide what note=chord vs arpeggios
-                emphasis = []
+                emphasis = [];
                 for(i=0; i < 4; i++) {
+                  beatOne = now + dur*i
+                  beatTwo = now + dur*i + dur/4
+                  beatThree = now + dur*i + 2*dur/4
+                  beatFour = now + dur*i + 3*dur/4
                   //For the first half of the song:
                   if(year%2 == 0) { //Year is even, chord on 1
-                    emphasis.push([now + dur*i, now + dur*i + dur/4, now + dur*i + 2*dur/4, now + dur*i + 3*dur/4])
+                    emphasis.push([beatOne, beatTwo, beatThree, beatFour])
                   } else { //Year is odd, chord on 3
-                    emphasis.push([now + dur*i + 2*dur/4, now + dur*i, now + dur*i + dur/4, now + dur*i + 3*dur/4])
+                    emphasis.push([beatThree, beatOne, beatTwo, beatFour])
                   }
                 }
                 for(i=4; i < notes.length; i++) {
+                  beatOne = now + dur*i
+                  beatTwo = now + dur*i + dur/4
+                  beatThree = now + dur*i + 2*dur/4
+                  beatFour = now + dur*i + 3*dur/4
                   //For the second half of the song:
                   if(month > 2 && month < 6) { //Spring! Chord on 1
-                    emphasis.push([now + dur*i, now + dur*i + dur/4, now + dur*i + 2*dur/4, now + dur*i + 3*dur/4])
+                    emphasis.push([beatOne, beatTwo, beatThree, beatFour])
                   } else if(month > 5 && month < 9) { //Summer! Chord on 2
-                    emphasis.push([now + dur*i + dur/4, now + dur*i, now + dur*i + 2*dur/4, now + dur*i + 3*dur/4])
+                    emphasis.push([beatTwo, beatOne, beatThree, beatFour])
                   } else if(month > 8 && month < 12) { //Fall! Chord on 3
-                    emphasis.push([now + dur*i + 2*dur/4, now + dur*i, now + dur*i + dur/4, now + dur*i + 3*dur/4])
+                    emphasis.push([beatThree, beatOne, beatTwo, beatFour])
                   } else if(month == 12 || month < 3) { //Winter! Chord on 4
-                    emphasis.push([now + dur*i +3*dur/4, now + dur*i, now + dur*i + dur/4, now + dur*i + 2*dur/4])
+                    emphasis.push([beatFour, beatOne, beatTwo, beatThree])
                   }
                 }
 
+                //Now to actually play the notes!
                 var i;
                 for(i=0; i < notes.length; i++) {
-                  //if(notes[i]==notes[i+1]) {
-                  if((i>3 && i<6) || (i<2)) {
+                  if((i%4 < 2) && (i != notes.length-1)) {
                     polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur/4, emphasis[i][0]);
                     synth.triggerAttackRelease(notes[i], dur/4, emphasis[i][1]);
                     synth.triggerAttackRelease(thirds[i], dur/4, emphasis[i][2]);
                     synth.triggerAttackRelease(fifths[i], dur/4, emphasis[i][3]);
-                  } else {
+                  } else { //otherwise just play the chord
                     polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur, now + dur*i);
                   }
                 };
