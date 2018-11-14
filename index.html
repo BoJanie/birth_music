@@ -75,32 +75,6 @@
                 function convertNumberToSolfege(num) {
                   var solfege = solfegeScale[num];
                   return solfege
-                  /*
-                  if(num=='0') {
-                    return tiNoteL;
-                  } else if(num=='1') {
-                    return doNote;
-                  } else if(num=='2') {
-                    return reNote;
-                  } else if(num=='3') {
-                    return miNote;
-                  } else if(num=='4') {
-                    return faNote;
-                  } else if(num=='5') {
-                    return soNote;
-                  } else if(num=='6') {
-                    return laNote;
-                  } else if(num=='7') {
-                    return tiNote;
-                  } else if(num=='8') {
-                    return doNoteH;
-                  } else if(num=='9') {
-                    return reNoteH;
-                  } else {
-                    return "";
-                    console.log("You need to use numbers!!")
-                  }
-                  */
                 }
 
                 //Convert numbers to solfege using function above, store in array to play
@@ -175,32 +149,28 @@
 
                 //The emphasis array will help us decide what note=chord vs arpeggios
                 emphasis = [];
-                for(i=0; i < 4; i++) {
+                for(i=0; i < notes.length; i++) {
                   beatOne = now + dur*i
                   beatTwo = now + dur*i + dur/4
                   beatThree = now + dur*i + 2*dur/4
                   beatFour = now + dur*i + 3*dur/4
                   //For the first half of the song:
-                  if(year%2 == 0) { //Year is even, chord on 1
-                    emphasis.push([beatOne, beatTwo, beatThree, beatFour])
-                  } else { //Year is odd, chord on 3
-                    emphasis.push([beatThree, beatOne, beatTwo, beatFour])
-                  }
-                }
-                for(i=4; i < notes.length; i++) {
-                  beatOne = now + dur*i
-                  beatTwo = now + dur*i + dur/4
-                  beatThree = now + dur*i + 2*dur/4
-                  beatFour = now + dur*i + 3*dur/4
-                  //For the second half of the song:
-                  if(month > 2 && month < 6) { //Spring! Chord on 1
-                    emphasis.push([beatOne, beatTwo, beatThree, beatFour])
-                  } else if(month > 5 && month < 9) { //Summer! Chord on 2
-                    emphasis.push([beatTwo, beatOne, beatThree, beatFour])
-                  } else if(month > 8 && month < 12) { //Fall! Chord on 3
-                    emphasis.push([beatThree, beatOne, beatTwo, beatFour])
-                  } else if(month == 12 || month < 3) { //Winter! Chord on 4
-                    emphasis.push([beatFour, beatOne, beatTwo, beatThree])
+                  if(i%8 < 4) {
+                    if(year%2 == 0) { //Year is even, chord on 1
+                      emphasis.push([beatOne, beatTwo, beatThree, beatFour])
+                    } else { //Year is odd, chord on 3
+                      emphasis.push([beatThree, beatOne, beatTwo, beatFour])
+                    }
+                  } else { //For the second half of the song:
+                    if(month > 2 && month < 6) { //Spring! Chord on 1
+                      emphasis.push([beatOne, beatTwo, beatThree, beatFour])
+                    } else if(month > 5 && month < 9) { //Summer! Chord on 2
+                      emphasis.push([beatTwo, beatOne, beatThree, beatFour])
+                    } else if(month > 8 && month < 12) { //Fall! Chord on 3
+                      emphasis.push([beatThree, beatOne, beatTwo, beatFour])
+                    } else if(month == 12 || month < 3) { //Winter! Chord on 4
+                      emphasis.push([beatFour, beatOne, beatTwo, beatThree])
+                    }
                   }
                 }
 
