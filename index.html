@@ -12,12 +12,15 @@
             Put in your birthday and click the submit button. <br>
             Note: Use zeroes (so if you were born on January fifth type in 01 and 05 instead of 1 and 5)</p>
 
-
-        Month born:<input id="month">
-        Day born:<input id="day">
-        Year born:<input id="year">
-        <button id="submit">Submit</button>
-
+            <form>
+              <label for="month">Month born:</label>
+              <input type="text" required pattern="[0-9]{2}" id = "month" placeholder="01">
+              <label for="day">Day born:</label>
+              <input type="text" required pattern="[0-9]{2}" id="day" placeholder="01">
+              <label for="year">Year born:</label>
+              <input type="text" required pattern="[0-9]{4}" id="year" placeholder="2018">
+              <button type="button" id="submit">Submit</button>
+            </form>
         <hr> <!--Horizontal line-->
         <div id="birthdayDisplay"></div> <br> <!--what is div?? -->
 
