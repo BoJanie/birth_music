@@ -11,15 +11,25 @@
         <p> <b>Try it out!</b> <br>
             Put in your birthday and click the submit button. <br>
             Note: Use zeroes (so if you were born on January fifth type in 01 and 05 instead of 1 and 5)</p>
-
-
-        Month born:<input id="month">
-        Day born:<input id="day">
-        Year born:<input id="year">
-        <button id="submit">Submit</button>
-
+            <form action="javascript:getBirthday" id=birthdayForm>
+              <label for="month">Month born:</label>
+              <input type="text" required pattern="[0-9]{2}" min="01" max="12" id = "month" placeholder="01">
+              <label for="day">Day born:</label>
+              <input type="text" required pattern="[0-9]{2}" min="01" max="31" id="day" placeholder="01">
+              <label for="year">Year born:</label>
+              <input type="text" required pattern="[0-9]{4}" id="year" placeholder="2018">
+              <button type="button" id="submit">Submit</button>
+            </form>
         <hr> <!--Horizontal line-->
         <div id="birthdayDisplay"></div> <br> <!--what is div?? -->
+        <div id="explainChords"></div> <br>
+        <div id="explainChordsUp"></div> <br>
+        <div id="explainChordsBack"></div> <br>
+        <div id="explainKey"></div> <br>
+        <div id="explainTempo"></div> <br>
+        <div id="explainArpeggios"></div> <br>
+        <div id="errorValidity"></div> <br>
+
 
         <script src="js/tone.js"></script>
 
@@ -252,8 +262,56 @@
                     polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur, now + dur*i);
                   }
                 };
+
+                //EXPLANATIONS FOR THE USER:
+                //This will allow the chords to be articulated:
+                chordRoman = ["I", "ii", "III", "IV", "V", "vi", "vii°"]
+                function translateChords(chord) {
+                  return chordRoman[(chord%7)]
+                }
+                romanChords = []
+                for(i=0; i<notes.length; i++) {
+                  romanChords.push(translateChords(notesNumbers[i]));
+                }
+                romanChordsString = romanChords.join(", ");
+                //This articulates the month born+key:
+                monthStrings = ["January", "February", "March", "April", "May",
+                  "June", "July", "August", "October", "September", "November",
+                  "December"];
+                function stringMonth(month) {
+                  return monthStrings[month-1];
+                }
+
+
+                /*
+                <div id="explainChords"></div> <br>
+                <div id="explainChordsUp"></div> <br>
+                <div id="explainKey"></div> <br>
+                <div id="explainTempo"></div> <br>
+                <div id="explainArpeggios"></div> <br>
+                <div id="errorValidity"></div> <br>
+                */
+                document.getElementById("explainChords").innerHTML =
+                "Your chord pattern is: "
+                + romanChordsString + ", I"
+
+                document.getElementById("explainKey").innerHTML =
+                "The middle section of your song was raised by " + change
+
+                document.getElementById("explainKey").innerHTML =
+                "Because you were born in " +month + ", your song is in the key of " + doNote
+
             };
-            document.getElementById('submit').addEventListener('click',getBirthday);
+
+            function checkForm() {
+              if(birthdayForm.checkValidity()) {
+                getBirthday()
+              } else {
+                console.log("You're not valid.");
+                document.getElementById("errorValidity").innerHTML = "Please make sure you use the proper format, including zeroes before single digit numbers.";
+              }
+            }
+            document.getElementById('submit').addEventListener('click',checkForm)
 
 
         </script>
