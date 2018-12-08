@@ -21,14 +21,14 @@
               <button type="button" id="submit">Submit</button>
             </form>
         <hr> <!--Horizontal line-->
+        <div id="errorValidity"></div> <br>
         <div id="birthdayDisplay"></div> <br> <!--what is div?? -->
         <div id="explainChords"></div> <br>
         <div id="explainChordsUp"></div> <br>
         <div id="explainChordsBack"></div> <br>
         <div id="explainKey"></div> <br>
         <div id="explainTempo"></div> <br>
-        <div id="explainArpeggios"></div> <br>
-        <div id="errorValidity"></div> <br>
+        <div id="explainArpeggios1"></div> <br>
 
 
         <script src="js/tone.js"></script>
@@ -188,6 +188,7 @@
                 //1= yes arpeggio, 2= no arpeggio
                 var arpeggios = [];
                 if(day%2 == 0) { //if born on an even numbered day, then this!
+                  typeNumDay = "even";
                   for(i=0; i < notes.length; i++) {
                     if(i%4 < 2){
                       arpeggios.push(1)
@@ -200,6 +201,7 @@
                   day == 7 || day == 11 || day == 13 || day == 17 ||
                   day == 19|| day == 23 || day == 29 || day == 31
                 ) {
+                  typeNumDay = "prime";
                   for(i=0; i < notes.length; i++) {
                     if((i%4 == 0 || i%4 == 2) && i%8 != 6){
                       arpeggios.push(1)
@@ -208,6 +210,7 @@
                     }
                   }
                 } else { //if non=prime odd, then:
+                  typeNumDay = "odd"
                   for(i=0; i < notes.length; i++) {
                     if(i%8 < 4){
                       arpeggios.push(1)
@@ -278,8 +281,13 @@
                 monthStrings = ["January", "February", "March", "April", "May",
                   "June", "July", "August", "October", "September", "November",
                   "December"];
+                keyStrings = ["Ab", "A", "Bb", "B", "C", "Db", "D", "Eb",
+                  "E", "F", "Gb", "G"]
                 function stringMonth(month) {
                   return monthStrings[month-1];
+                }
+                function stringKey(month) {
+                  return keyStrings[month-1];
                 }
 
 
@@ -296,10 +304,19 @@
                 + romanChordsString + ", I"
 
                 document.getElementById("explainKey").innerHTML =
-                "The middle section of your song was raised by " + change
+                "The middle section of your song was raised by " + change + "."
 
                 document.getElementById("explainKey").innerHTML =
-                "Because you were born in " +month + ", your song is in the key of " + doNote
+                "Because you were born in " + stringMonth(month)
+                + ", your song is in the key of " + stringKey(month) + "."
+
+                document.getElementById("explainTempo").innerHTML =
+                "Because you were born on the day of " + day
+                + ", each chord lasts " + dur + " seconds."
+                document.getElementById("explainArpeggios1").innerHTML =
+                "Because you were born on a "+ typeNumDay
+                + "-numbered day, your repeating pattern for whether or not an arpeggio will occur is: "
+                + arpeggios + "."
 
             };
 
