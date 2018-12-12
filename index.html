@@ -21,13 +21,15 @@
             </form>
         <hr> <!--Horizontal line-->
         <div id="errorValidity"></div> <br>
-        <div id="birthdayDisplay"></div> <br> <!--what is div?? -->
+        <div id="birthdayDisplay"></div> <br>
         <div id="explainChords"></div> <br>
-        <div id="explainChordsUp"></div> <br>
-        <div id="explainChordsBack"></div> <br>
+        <div id="explainChange"></div> <br>
         <div id="explainKey"></div> <br>
         <div id="explainTempo"></div> <br>
         <div id="explainArpeggios1"></div> <br>
+        <div id="explainArpeggios2"></div> <br>
+        <div id="explainArpeggios3"></div> <br>
+        <p> If you'd like to learn more about how the music is made, check out the <a href="https://github.com/BoJanie/birth_music/blob/master/README.md">README!</a> </p>
 
 
         <script src="js/tone.js"></script>
@@ -118,8 +120,6 @@
                 }
                 console.log(notesNumbers);
 
-                //CHORDS!! Make a polysynth First
-                //var polySynth = newTone.PolySynth(4,Tone.synth).toMaster()
                 //Find the THIRD
                 var thirds = [];
                 for(i=0;i<notesNumbers.length; i++) {
@@ -146,8 +146,6 @@
                   }
                 }
 
-                //ISSUE!!! On my computer Firefox, if notes.length>6, will not play notes after that. notes.length>7=not play at all (CPU goes whack)
-
                 const now = 0.50+Tone.now();
                 //Set a time duration (tempo) based on day born
                 var dur = 1 + dayInt*0.025;
@@ -167,18 +165,30 @@
                   if(i%8 < 4) {
                     if(year%2 == 0) { //Year is even, chord on 1
                       emphasis.push([beatOne, beatTwo, beatThree, beatFour])
+                      yearEvenOdd = "even" //These variables will be used to explain to users later.
+                      yearBeat = "1st"
                     } else { //Year is odd, chord on 3
                       emphasis.push([beatThree, beatOne, beatTwo, beatFour])
+                      yearEvenOdd = "odd"
+                      yearBeat = "3rd"
                     }
                   } else { //For the second half of the song:
                     if(month > 2 && month < 6) { //Spring! Chord on 1
                       emphasis.push([beatOne, beatTwo, beatThree, beatFour])
+                      season = "spring" //This will help explain
+                      seasonBeat = "1st"
                     } else if(month > 5 && month < 9) { //Summer! Chord on 2
                       emphasis.push([beatTwo, beatOne, beatThree, beatFour])
+                      season = "summer"
+                      seasonBeat = "2nd"
                     } else if(month > 8 && month < 12) { //Fall! Chord on 3
                       emphasis.push([beatThree, beatOne, beatTwo, beatFour])
+                      season = "fall"
+                      seasonBeat = "3rd"
                     } else if(month == 12 || month < 3) { //Winter! Chord on 4
                       emphasis.push([beatFour, beatOne, beatTwo, beatThree])
+                      season = "winter"
+                      seasonBeat = "4th"
                     }
                   }
                 }
@@ -237,7 +247,6 @@
                     var passingNote = convertNumberToSolfege(notesNumbers[i] - 1);
                     polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur/2, now + dur*i)
                     polySynth.triggerAttackRelease([passingNote, thirds[i], fifths[i]], dur/2, now + dur*i + dur/2)
-                    console.log("Passing note down at note number: " + (i+1))
                   } else if(notesNumbers[i] == (notesNumbers[i+1] - 5)) { //If a fifth above, four passing notes
                     var passOne = convertNumberToSolfege(notesNumbers[i] + 1);
                     var passTwo = convertNumberToSolfege(notesNumbers[i] + 2);
@@ -248,7 +257,6 @@
                     synth.triggerAttackRelease(passTwo, dur/8, now + dur*i + 5*dur/8);
                     synth.triggerAttackRelease(passThree, dur/8, now + dur*i + 6*dur/8);
                     synth.triggerAttackRelease(passFour, dur/8, now + dur*i + 7*dur/8);
-                    console.log("Four passing notes up at note number " + (i+1));
                   } else if(notesNumbers[i] == (notesNumbers[i+1] + 5)) { //If a fifth above, four passing notes
                     var passOne = convertNumberToSolfege(notesNumbers[i] - 1);
                     var passTwo = convertNumberToSolfege(notesNumbers[i] - 2);
@@ -259,7 +267,6 @@
                     synth.triggerAttackRelease(passTwo, dur/8, now + dur*i + 5*dur/8);
                     synth.triggerAttackRelease(passThree, dur/8, now + dur*i + 6*dur/8);
                     synth.triggerAttackRelease(passFour, dur/8, now + dur*i + 7*dur/8);
-                    console.log("Four passing notes down at note number " + (i+1));
                   } else { //otherwise just play the chord
                     polySynth.triggerAttackRelease([notes[i], thirds[i], fifths[i]], dur, now + dur*i);
                   }
@@ -289,20 +296,12 @@
                   return keyStrings[month-1];
                 }
 
-
-                /*
-                <div id="explainChords"></div> <br>
-                <div id="explainChordsUp"></div> <br>
-                <div id="explainKey"></div> <br>
-                <div id="explainTempo"></div> <br>
-                <div id="explainArpeggios"></div> <br>
-                <div id="errorValidity"></div> <br>
-                */
+                //THESE WILL EXPLAIN TO THE USER WHAT'S GOING ON:
                 document.getElementById("explainChords").innerHTML =
                 "Your chord pattern is: "
                 + romanChordsString + ", I"
 
-                document.getElementById("explainKey").innerHTML =
+                document.getElementById("explainChange").innerHTML =
                 "The middle section of your song was raised by " + change + "."
 
                 document.getElementById("explainKey").innerHTML =
@@ -312,18 +311,25 @@
                 document.getElementById("explainTempo").innerHTML =
                 "Because you were born on the day of " + day
                 + ", each chord lasts " + dur + " seconds."
+
                 document.getElementById("explainArpeggios1").innerHTML =
                 "Because you were born on a "+ typeNumDay
-                + "-numbered day, your repeating pattern for whether or not an arpeggio will occur is: "
+                + "-numbered day, the key for whether or not an arpeggio-like pattern will occur is: "
                 + arpeggios + "."
+
+                document.getElementById("explainArpeggios2").innerHTML =
+                "Since you were born an " + yearEvenOdd + "-numbered year, if arpeggiated the chord will fall on the " + yearBeat + " beat of each measure in the first half of the 8 measure pattern."
+
+                document.getElementById("explainArpeggios3").innerHTML =
+                "Since you were born in " + season + ", if arpeggiated the chord will fall on the " + seasonBeat + " beat of each measure in the second half of the 8 measure pattern."
 
             };
 
-            function checkForm() {
+            function checkForm() { //This function checks the validity before going through with the birthday
               if(birthdayForm.checkValidity()) {
                 getBirthday()
               } else {
-                console.log("You're not valid.");
+                console.log("You're not valid."); //Warns the user to use the proper formatting.
                 document.getElementById("errorValidity").innerHTML = "Please make sure you use the proper format, including zeroes before single digit numbers.";
               }
             }
